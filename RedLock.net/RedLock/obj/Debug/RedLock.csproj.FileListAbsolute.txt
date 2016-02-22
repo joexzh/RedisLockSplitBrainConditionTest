@@ -1,0 +1,8 @@
+F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedLock.net\RedLock\bin\Debug\RedLock.dll
+F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedLock.net\RedLock\bin\Debug\RedLock.pdb
+F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedLock.net\RedLock\bin\Debug\StackExchange.Redis.dll
+F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedLock.net\RedLock\bin\Debug\StackExchange.Redis.pdb
+F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedLock.net\RedLock\bin\Debug\StackExchange.Redis.xml
+F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedLock.net\RedLock\obj\Debug\RedLock.csprojResolveAssemblyReference.cache
+F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedLock.net\RedLock\obj\Debug\RedLock.dll
+F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedLock.net\RedLock\obj\Debug\RedLock.pdb
