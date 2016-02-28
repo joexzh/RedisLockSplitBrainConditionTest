@@ -1,1 +1,0 @@
-F:\Joe\GitHub\RedisLockSplitBrainConditionTest\RedisLockSplitBrainConditionTest\bin\Debug\RedisLockSplitBrainConditionTest.exe.config
