@@ -56,6 +56,7 @@ namespace RedLock
 
 		public const string DefaultRedisKeyFormat = "redlock-{0}";
         public List<Tuple<string, string>> RedisKeyValues = new List<Tuple<string, string>>();
+        public bool HasAcquired { get; private set; }
 
 		private RedisLock(
 			ICollection<RedisConnection> redisCaches,
@@ -166,6 +167,7 @@ namespace RedLock
 
 			if (IsAcquired)
 			{
+                HasAcquired = true;
 				StartAutoExtendTimer();
 			}
 		}

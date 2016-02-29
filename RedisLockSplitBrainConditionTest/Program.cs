@@ -13,20 +13,29 @@ namespace RedisLockSplitBrainConditionTest
     {
         static void Main(string[] args)
         {
-            startTest(1, 200, 100, GetLock, WriteLog);
+            var endPoints = new[]
+            {
+                     new DnsEndPoint("172.16.33.200", 9991),
+                     new DnsEndPoint("172.16.33.200", 9992),
+                     new DnsEndPoint("172.16.33.200", 9993),
+                     new DnsEndPoint("172.16.33.200", 9994),
+                     new DnsEndPoint("172.16.33.200", 9995)
+                };
+            startTest(endPoints, 2, 100, 100, GetLock, WriteLog);
 
             Console.ReadLine();
         }
 
-        static void startTest(int count, int expire, int interval, Func<List<LockTestClass>, List<Task<RedisLock>>> getLock, Action<List<LockTestClass>> writeLog)
+        static void startTest(EndPoint[] endPoints, int acquireCount, int expire, int interval, Func<List<LockTestClass>, List<Task<RedisLock>>> getLock, Action<List<LockTestClass>> writeLog)
         {
             List<LockTestClass> lockClasses = new List<LockTestClass>();
 
-            Parallel.For(0, count, c => lockClasses.Add(new LockTestClass(expire, interval)));
+            Parallel.For(0, acquireCount, c => lockClasses.Add(new LockTestClass(endPoints, expire, interval)));
             Console.WriteLine("Init redis instance completed.");
             var tasks = getLock(lockClasses);
 
-            Task.WhenAll(tasks).ContinueWith(t => {
+            Task.WhenAll(tasks).ContinueWith(t =>
+            {
                 Console.WriteLine("lock test completed, begin to write log.");
                 writeLog(lockClasses);
                 Console.WriteLine("Write log completed.");
@@ -62,16 +71,8 @@ namespace RedisLockSplitBrainConditionTest
         RedisLockFactory _redisLockFactory;
         RedisLock _redisLock;
 
-        public LockTestClass(int expire, int interval)
+        public LockTestClass(EndPoint[] endPoints, int expire, int interval)
         {
-            var endPoints = new[]
-            {
-                     new DnsEndPoint("redis1", 9991),
-                     new DnsEndPoint("redis2", 9992),
-                     new DnsEndPoint("redis3", 9993),
-                     new DnsEndPoint("redis3", 9994),
-                     new DnsEndPoint("redis3", 9995)
-                };
             _redisLockFactory = new RedisLockFactory(endPoints);
 
             _resource = "the-thing-we-are-locking-on";
@@ -95,7 +96,7 @@ namespace RedisLockSplitBrainConditionTest
 
         public void WriteLog()
         {
-            if (!_redisLock.IsAcquired)
+            if (!_redisLock.HasAcquired)
             {
                 Console.WriteLine(Environment.NewLine);
                 foreach (var keyValue in _redisLock.RedisKeyValues)
